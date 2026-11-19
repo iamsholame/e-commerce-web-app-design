@@ -50,7 +50,7 @@ export default function Storefront() {
       <section className="content-grid" id="home">
         <div className="product-side" id="product">
           <div className="eyebrow"><span className="eyebrow-dot" /> SOUND, REFINED</div>
-          <h1>Less noise.<br /><em>More you.</em></h1>
+          <h1>Welcome to<br /><em>My Store</em></h1>
           <p className="intro">A quieter kind of listening. Thoughtfully crafted headphones for wherever your day takes you.</p>
 
           <div className="product-visual">
