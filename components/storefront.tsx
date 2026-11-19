@@ -4,10 +4,26 @@ import { useCallback, useState } from 'react'
 import Image from 'next/image'
 import { loadStripe } from '@stripe/stripe-js'
 import { EmbeddedCheckout, EmbeddedCheckoutProvider } from '@stripe/react-stripe-js'
-import { ArrowRight, Check, LockKeyhole, Menu, ShieldCheck, Truck } from 'lucide-react'
+import { ArrowRight, Check, LockKeyhole, Menu, ShieldCheck, Star, Truck } from 'lucide-react'
 import { startCheckoutSession } from '@/app/actions/stripe'
 
 const stripePromise = loadStripe(process.env.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY!)
+
+const testimonials = [
+  { name: 'Amara O.', location: 'Lagos', rating: 5, quote: 'The sound is calm and clear. I wear them all day and forget they are on.' },
+  { name: 'Daniel R.', location: 'Toronto', rating: 5, quote: 'Comfortable for long flights, and the battery lasts as promised. Easy purchase too.' },
+  { name: 'Priya S.', location: 'London', rating: 4, quote: 'Beautiful finish that suits any room. I only wish the case were a little smaller.' },
+]
+
+function StarRating({ rating }: { rating: number }) {
+  return (
+    <div className="stars" role="img" aria-label={`Rated ${rating} out of 5 stars`}>
+      {Array.from({ length: 5 }, (_, index) => (
+        <Star key={index} aria-hidden="true" className={index < rating ? 'star-filled' : 'star-empty'} />
+      ))}
+    </div>
+  )
+}
 
 function CheckoutPanel({ started }: { started: boolean }) {
   const fetchClientSecret = useCallback(() => startCheckoutSession('aurora-headphones'), [])
@@ -48,7 +64,7 @@ export default function Storefront() {
       </header>
 
       <section className="content-grid" id="home">
-        <div className="product-side" id="product">
+        <div className="product-side hero-panel" id="product">
           <div className="eyebrow"><span className="eyebrow-dot" /> SOUND, REFINED</div>
           <h1>Welcome to<br /><em>My Store</em></h1>
           <p className="intro">A quieter kind of listening. Thoughtfully crafted headphones for wherever your day takes you.</p>
@@ -95,6 +111,29 @@ export default function Storefront() {
           </div>
           <p className="support-note">A little question? <a href="mailto:hello@forma.example">We&apos;re here to help.</a></p>
         </aside>
+      </section>
+
+      <section className="testimonials" aria-labelledby="testimonials-heading">
+        <div className="testimonials-heading">
+          <span className="step-label">CUSTOMER STORIES</span>
+          <h2 id="testimonials-heading">Loved by listeners.</h2>
+        </div>
+        <ul className="testimonial-grid">
+          {testimonials.map((testimonial) => (
+            <li key={testimonial.name}>
+              <figure className="testimonial-card">
+                <StarRating rating={testimonial.rating} />
+                <blockquote><p>{`“${testimonial.quote}”`}</p></blockquote>
+                <figcaption>
+                  <footer>
+                    <strong>{testimonial.name}</strong>
+                    <span>{testimonial.location}</span>
+                  </footer>
+                </figcaption>
+              </figure>
+            </li>
+          ))}
+        </ul>
       </section>
 
       <footer className="page-footer"><span>© 2026 FORMA AUDIO</span><span>MADE FOR THE MOMENTS IN BETWEEN</span><span>DESIGNED WITH INTENTION</span></footer>
